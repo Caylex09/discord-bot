@@ -101,7 +101,7 @@ class Setu(commands.Cog):
                             data = await resp.read()
                             from io import BytesIO
 
-                            f = discord.File(BytesIO(data), filename="setu.png")
+                            f = discord.File(BytesIO(data), filename="SPOILER_setu.png")
                             # 图片不放 Embed 里，而是作为附件
                             await ctx.reply(embed=embed, file=f)
                         else:
