@@ -63,7 +63,7 @@ class MyBot(commands.Bot):
         # 2. 制作一个漂亮的 Embed
         embed = discord.Embed(
             title="Bot 上线通知",
-            description="Bot 已成功连接。",
+            description="Bot 已成功连接。点个 Star 吧 qaq！",
             color=0x2ECC71,  # 绿色
             timestamp=datetime.datetime.now(),
         )
