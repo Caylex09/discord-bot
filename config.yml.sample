@@ -18,6 +18,10 @@ help_message: | # 帮助信息
   - 60s 读懂世界
 skip_time: 1764518400 # 防止爬取过早文章发布
 reaction: <:pig:1462399294614274222> # 机器人回应表情
+special_checkins:
+  "2026-03-06": # 需要指定 UTC+8 的日期 (YYYY-MM-DD 格式)
+    message: "<sentence>"
+    rp: 100
 channels: # 配置 channel 信息
   - id: 1463154750299181217
     send_message: true # 是否发送上线消息

@@ -147,7 +147,7 @@ class DailyTasks(commands.Cog):
                         print(f"Failed to send 60s News to {channel.id}: {e}")
 
     # --- 定时任务 ---
-    # UTC 16:05 = 北京时间 00:05
+    # UTC 00:05 = 北京时间 08:05
     @tasks.loop(time=datetime.time(hour=0, minute=5, tzinfo=datetime.timezone.utc))
     async def daily_push_task(self):
         await self.bot.wait_until_ready()

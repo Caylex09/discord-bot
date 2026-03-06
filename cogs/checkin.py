@@ -167,17 +167,24 @@ class CheckIn(commands.Cog):
         if existing_rp is not None:
             await ctx.reply(f"你今天已经打过卡了！今日人品值：**{existing_rp}**")
             return
-        rp = random.randint(0, 100)
-        self.data.add_checkin(user_id, today, rp)
-        comment = ""
-        if rp == 100:
-            comment = "💯 天选之子！"
-        elif rp >= 90:
-            comment = "✨ 欧皇附体！"
-        elif rp >= 60:
-            comment = "✅ 运势不错。"
+
+        special_checkins = self.bot.config.get("special_checkins", {})
+
+        if today in special_checkins:
+            rp = special_checkins[today].get("rp", 100)
+            comment = special_checkins[today].get("message", "今日有特殊事件发生！")
         else:
-            comment = "🌚 还是去刷题攒攒人品吧..."
+            rp = random.randint(0, 100)
+            if rp == 100:
+                comment = "💯 天选之子！"
+            elif rp >= 90:
+                comment = "✨ 欧皇附体！"
+            elif rp >= 60:
+                comment = "✅ 运势不错。"
+            else:
+                comment = "🌚 还是去刷题攒攒人品吧..."
+
+        self.data.add_checkin(user_id, today, rp)
         embed = discord.Embed(title="📅 打卡成功", color=0x1ABC9C)
         embed.add_field(name="日期", value=today, inline=True)
         embed.add_field(name="今日人品 (RP)", value=f"**{rp}**", inline=True)
