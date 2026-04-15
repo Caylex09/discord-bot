@@ -70,18 +70,31 @@ class RSSFeeder(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def rss_loop(self):
-        await self.bot.wait_until_ready()
         print("Starting RSS check...")
 
-        for ch_config in self.config["channels"]:
-            ch_id = ch_config["id"]
-            for follow in ch_config.get("follow_articles", []):
-                try:
-                    await self.process_feed(ch_id, follow)
-                except Exception as e:
-                    print(f"Error processing feed in channel {ch_id}: {e}")
+        try:
+            # 使用 .get("channels", []) 避免 KeyError 导致循环抛出异常而停止
+            for ch_config in self.config.get("channels", []):
+                ch_id = ch_config["id"]
+                for follow in ch_config.get("follow_articles", []):
+                    try:
+                        await self.process_feed(ch_id, follow)
+                    except Exception as e:
+                        print(f"Error processing feed in channel {ch_id}: {e}")
+        except Exception as e:
+            print(f"Critical error in rss_loop: {e}")
 
         print("RSS check finished.")
+
+    @rss_loop.before_loop
+    async def before_rss_loop(self):
+        # 推荐将 wait_until_ready 放在 before_loop 中
+        await self.bot.wait_until_ready()
+
+    @rss_loop.error
+    async def rss_loop_error(self, error):
+        # 捕获任务彻底崩溃的异常，方便在控制台中调试
+        print(f"Task rss_loop encountered an unhandled error: {error}")
 
     @commands.command(name="brute")
     async def force_check(self, ctx):
