@@ -55,6 +55,8 @@ class Setu(commands.Cog):
         tags = img_data["tags"]
         # API 默认返回的是 i.pixiv.re 的代理链接，Discord 可以直接显示
         img_url = img_data["urls"]["original"]
+        # 更新：API 代理链接挂了
+        img_url = img_url.replace("i.pixiv.re", "i.muxmus.com")
         is_r18 = img_data.get("r18", False)
 
         # 6. 构建 Embed
